@@ -38,3 +38,42 @@ FROM product
 GROUP BY product_type
 HAVING SUM(sale_price) > (SUM(purchase_price)) * 1.5;
 
+## Task 03
+
+3.1  CREATE VIEW ViewPractice5_1 (product_type, sale_price,regist_date)
+AS
+SELECT product_type,sale_price,regist_date
+  FROM product
+  where sale_price>=1000 
+        and regist_date="2009-09-20";
+        
+3.2 <img width="1104" alt="image" src="https://user-images.githubusercontent.com/42401954/179404743-565fb587-2dec-4ea5-a25e-73eaf340b64e.png">
+
+3.3 select product_id ,product_name ,product_type ,sale_price ,
+       (SELECT AVG(sale_price)  
+               from product ) as sale_price_avg
+from product
+
+3.4  CREATE VIEW AvgPriceByType (product_id,product_name ,product_type ,sale_price ,sale_price_avg_type)
+AS
+select product_id,product_name ,product_type ,sale_price ,
+                     (SELECT AVG(sale_price)
+                       FROM product AS p2
+                      WHERE p1.product_type = p2.product_type
+                      GROUP BY product_type) as sale_price_avg_type
+from product as p1 ;
+
+3.5 是
+
+3.6 
+
+3.7 SELECT sum(case when sale_price<= 1000 then 1  else 0 end) as low_price,
+       sum(case when sale_price between 1001 and 3000 then 1  else 0 end) as mid_price,
+       sum(case when sale_price> 3000 then 1  else 0 end) as high_price
+  FROM product;
+
+
+
+
+
+
