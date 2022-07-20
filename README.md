@@ -73,6 +73,60 @@ from product as p1 ;
   FROM product;
 
 
+## Task 04
+
+4.1 SELECT *
+from product
+where sale_price > 500
+UNION 
+SELECT *
+from product2
+where sale_price >500
+
+4.2 select *
+from product 
+where product_id not in(
+SELECT product_id 
+from product 
+WHERE product_id  NOT IN (select product_id from product2)
+union
+select product_id 
+from product2 
+where product_id  NOT IN (select product_id from product))
+
+
+4.3 SELECT p.product_id ,product_type ,product_name ,sale_price ,shop_name
+from product p 
+left outer join shopproduct 
+on p.product_id =shopproduct.product_id 
+WHERE 1=(select count(DISTINCT sale_price)
+          from product p2 
+          where p.product_type =p2.product_type 
+          and p.sale_price >=p2.sale_price )
+      
+4.4 SELECT p.product_id ,p.product_type ,product_name ,sale_price ,shop_name
+from product p 
+left join shopproduct 
+on p.product_id =shopproduct.product_id 
+inner join 
+(select product_type , max(sale_price) as da
+from product p3 
+group by product_type )as pda
+on p.product_type =pda.product_type 
+and p.sale_price =pda.da
+
+
+4.5 SELECT	product_id, product_name, sale_price
+       ,(select SUM(P2.sale_price) 
+       		from Product AS P2
+       		where ((P1.sale_price > P2.sale_price)
+             OR (P1.sale_price = P2.sale_price 
+            AND P1.product_id>=P2.product_id)) )       
+  FROM Product AS P1 
+ ORDER BY sale_price asc, product_id asc ;
+ 
+ 
+
 
 
 
